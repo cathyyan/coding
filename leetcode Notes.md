@@ -4,7 +4,7 @@
 
 Pay attention to that the last less-than-K segment does not need a reversal!
 
-'''cc
+```cpp
 // Reverse a given list by reversing one at a time.
 ListNode* Reverse(ListNode* head) {
     ListNode* new_head = nullptr;
@@ -63,6 +63,6 @@ ListNode* ReverseEveryK(ListNode* head, int k) {
     
     return h;
 }
-'''
+```
 
 ## Next ...
