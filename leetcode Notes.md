@@ -32,7 +32,6 @@ int strStr(std::string haystack, std::string needle) {
   std::vector<int> f = buildFailureFunc(needle);
   std::size_t i = 0, j = 0;
   while (i < haystack.size() && j < needle.size()) {
-    std::cout << i << " " << j << std::endl;
     if (haystack[i] == needle[j]) {
       ++i, ++j;
     } else if (j) {                  < ---- SAME HERE!
