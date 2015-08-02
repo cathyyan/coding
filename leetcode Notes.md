@@ -1,5 +1,35 @@
 # Notes on LeetCode problems
 
+## Reverse iterators (such as `rbegin()`, `rend()`)
+
+Their `base()` returns the next element (in normal order) to the one it is logically pointing to. That is, `v.rbegin().base()` is `v.end()` and `v.rend().base()` is `v.begin()`. See the following diagram (from cppreference.com) for details.
+
+![Reverse iterators](http://upload.cppreference.com/mwiki/images/3/39/range-rbegin-rend.svg)
+
+I used reverse iterators to solve Permunation. See code below:
+
+```c++
+  void nextPermutation(std::vector<int>& nums) {
+    auto it = std::adjacent_find(nums.rbegin(), nums.rend(), std::greater<int>());
+    // 'it' points to the first ont, going backward, that is greater than its next. 
+    if (it == nums.rend()) { // in descending order. Simply reverse.
+      std::reverse(nums.begin(), nums.end());
+    } else {
+      // 'other' points to the first element after 'it' that is greater than *(it+1)
+      // (going backwards). Such an element always exits.
+      auto other = std::find_if(
+        nums.rbegin(), it + 1,
+        std::bind(std::greater<int>(), std::placeholders::_1, *(it + 1)));
+      std::iter_swap(it + 1, other);
+      std::sort(it.base() - 1, nums.end());   // <-- 'it.base() - 1' is 'it' !!
+    }
+  }
+```
+
+(I know that c++ provides [`std::next_permutation()`][cpp_1].)
+
+[cpp_1]: http://en.cppreference.com/w/cpp/algorithm/next_permutation
+
 ## KMP implementation tricks
 
 [KMP](https://en.wikipedia.org/wiki/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm) is a fast `strstr()` algorithm. It is also easy to understand and implementation. However there are several tips on implement.
