@@ -1,5 +1,49 @@
 # Notes on LeetCode problems
 
+## Binary search - extended
+
+Find a target. Return its first/last occurrence if it exists; otherwise return the first/last position where it would be if it was in the number vector.
+
+Notes:
+*   Always return `start` when `start > end` is true.
+*   For the first position, go to the first half when `target <= nums[mid]`; while for the last position, always go to the second half when `target >= nums[mid]`.
+
+```cpp
+// Find the first occurrence of 'target' if it exists. Otherwise return
+// the leftmost position where to put it in the vector if we would insert it.
+int firstAt(const std::vector<int>& nums, int start, int end, int target) {
+  if (start > end) { return start; }    // <<----- Always return `start`.
+  
+  int mid = (start + end) / 2;
+  if (target <= nums[mid]) {            // <<------ for the first position
+    return firstAt(nums, start, mid - 1, target);
+  }
+  return firstAt(nums, mid + 1, end, target);
+}
+
+// Find the last occurrence of 'target' if it exists. Otherwise return
+// the rightmost position where to put it in the vector if we would insert it.
+int lastAt(const std::vector<int>& nums, int start, int end, int target) {
+  if (start > end) { return start; }    // <<----- Always return `start`. SAME HERE.
+  
+  int mid = (start + end) / 2;
+  if (target >= nums[mid]) {            // <<------ for the first position
+    return lastAt(nums, mid + 1, end, target);
+  }
+  return lastAt(nums, start, mid - 1, target);
+}
+
+std::vector<int> searchRange(const std::vector<int>& nums, int target) {
+  int size = nums.size();
+  int first = firstAt(nums, 0, size - 1, target);
+  int last = lastAt(nums, 0, size - 1, target);
+  if (first < size && nums[first] == target) {
+    return {first, last - 1};
+  }
+  return {-1, -1};
+}
+```
+
 ## Reverse iterators (such as `rbegin()`, `rend()`)
 
 Their `base()` returns the next element (in normal order) to the one it is logically pointing to. That is, `v.rbegin().base()` is `v.end()` and `v.rend().base()` is `v.begin()`. See the following diagram (from cppreference.com) for details.
