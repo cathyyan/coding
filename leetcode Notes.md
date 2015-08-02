@@ -142,4 +142,49 @@ ListNode* ReverseEveryK(ListNode* head, int k) {
 }
 ```
 
-## Next ...
+## Two Sum
+
+Very sweet approach I saw for the first time. Sounds similar to binary search. See the comments for details.
+
+```c++
+// Two-pointer solution for Two Sum.
+std::vector<int> twoSum(const std::vector<int>& nums, int target) {
+  std::vector<int> result;
+  
+  // 1. sort the given numbers in ascending order.
+  std::vector<int> indices(nums.size());
+  std::iota(indices.begin(), indices.end(), 0);
+  std::sort(indices.begin(), indices.end(), [&nums](int a, int b) {
+    return nums[a] < nums[b];
+  });
+  
+  // 2. two pointers: b(egin) and e(nd). Every time we sum up
+  // the two numbers pointed by them and compare the result
+  // with 'target'.
+  int b = 0, e = static_cast<int>(indices.size()) - 1;
+  while (b < e) {
+    int sum = nums[indices[b]] + nums[indices[e]];
+    // Three cases may happen.
+    if (sum < target) {
+      // In this case, the sum of any pair starting with 'b' is
+      // less than target. Drop them.
+      ++b;
+    } else if (sum > target) {
+      // In this case, the sum of any pair ending with 'e' is
+      // less than target. Drop them.
+      --e;
+    } else {
+      // Save the result we just found.
+      result.push_back(std::min(indices[b], indices[e]) + 1);
+      result.push_back(std::max(indices[b], indices[e]) + 1);
+      // The equal case. Similarly, drop all either starting
+      // with 'b' OR ending with 'e'.
+      // ++b; --e;
+      //
+      // Since there is at most one solution. Simply return here.
+      break;
+    }
+  }
+  return result;
+}
+```
