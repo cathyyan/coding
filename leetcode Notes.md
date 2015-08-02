@@ -2,7 +2,7 @@
 
 ## KMP implementation tricks
 
-[KMP](https://en.wikipedia.org/wiki/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm) is a fast `strstr()` algorithm. It is also easy to understand and implementation. However there are several tips on implementation.
+[KMP](https://en.wikipedia.org/wiki/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm) is a fast `strstr()` algorithm. It is also easy to understand and implementation. However there are several tips on implement.
 
 ```
 Do NOT ever call failure function on 0, to avoid endless loops.
