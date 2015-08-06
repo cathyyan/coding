@@ -326,3 +326,210 @@ class Solution {
   bool grids_[N][N];
 };
 ```
+
+## Search Insert Position
+
+Given a sorted array and a target value, return the index if the target is found. If not, return the index where it would be if it were inserted in order. You may assume no duplicates in the array.
+
+```cpp
+class Solution {
+public:
+    int mySearch(const vector<int>& nums, int start, int end, int target) {
+        if (end < start) { return start; }
+        int mid = (start + end) / 2;
+        if (target <= nums[mid]) { return mySearch(nums, start, mid - 1, target); }
+        return mySearch(nums, mid + 1, end, target);
+    }
+
+    int searchInsert(vector<int>& nums, int target) {
+        return mySearch(nums, 0, nums.size() - 1, target);
+    }
+};
+```
+
+## Search for a Range 
+
+Given a sorted array of integers, find the starting and ending position of a given target value. If the target is not found in the array, return [-1, -1].
+
+```cpp
+class Solution {
+public:
+// Find the first occurrence of 'target' if it exists. Otherwise return
+// the leftmost position where to put it in the vector if we would insert it.
+int firstAt(const std::vector<int>& nums, int start, int end, int target) {
+  if (start > end) { return start; }
+  
+  int mid = (start + end) / 2;
+  if (target <= nums[mid]) {
+    return firstAt(nums, start, mid - 1, target);
+  }
+  return firstAt(nums, mid + 1, end, target);
+}
+
+// Find the last occurrence of 'target' if it exists. Otherwise return
+// the rightmost position where to put it in the vector if we would insert it.
+int lastAt(const std::vector<int>& nums, int start, int end, int target) {
+  if (start > end) { return start; }
+  
+  int mid = (start + end) / 2;
+  if (target >= nums[mid]) {
+    return lastAt(nums, mid + 1, end, target);
+  }
+  return lastAt(nums, start, mid - 1, target);
+}
+
+std::vector<int> searchRange(const std::vector<int>& nums, int target) {
+  int size = nums.size();
+  int first = firstAt(nums, 0, size - 1, target);
+  int last = lastAt(nums, 0, size - 1, target);
+  if (first < size && nums[first] == target) {
+    return {first, last - 1};
+  }
+  return {-1, -1};
+}
+};
+```
+
+## Search in Rotated Sorted Array 
+
+This solution allows for duplicates.
+
+```cpp
+int SearchInRotatedSortedList(std::vector<int>& nums, int start, int end, int target) {
+    if (start > end) {
+        return -1;
+    }
+    
+    int mid = (start + end) / 2;
+    if (target == nums[mid]) {
+        return mid;
+    }
+    if (nums[start] >= nums[end]) {
+        if (nums[mid] > nums[end]) {
+            if (target <= nums[mid] && target > nums[end]) {
+                end = mid - 1;
+            } else {
+                start = mid + 1;
+            }
+        } else if (nums[mid] < nums[start]) {
+            if (target > nums[mid] && target < nums[start]) {
+                start = mid + 1;
+            } else {
+                end = mid - 1;
+            }
+        } else {
+            ++start;
+            --end;
+        }
+    } else {  // not rotated at all.
+        if (target > nums[mid]) {
+            start = mid + 1;
+        } else {
+            end = mid - 1;
+        }
+    }
+    return SearchInRotatedSortedList(nums, start, end, target);
+}
+
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        return SearchInRotatedSortedList(nums, 0, nums.size() - 1, target);
+    }
+};
+```
+
+## Longest Valid Parentheses
+
+```cpp
+class Solution {
+public:
+    int longestValidParentheses(const std::string& s) {
+      int max = 0;
+      // longest[i]: length of the longest valid substr ending at position i.
+      std::vector<int> longest(s.length(), 0);
+      // Positions waiting for a match.
+      std::stack<int> unmatched;
+      for (std::size_t i = 0; i < s.length(); ++i) {
+        if (s[i] == '(') {
+          unmatched.push(i);
+          longest[i] = 0;
+        } else {
+          assert(s[i] == ')');
+          
+          if (!unmatched.empty()) {
+            int match_pos = unmatched.top();
+            unmatched.pop();
+            longest[i] = i - match_pos + 1 + (match_pos ? longest[match_pos - 1] : 0);
+          } else {
+            longest[i] = 0;
+          }
+        }
+        if (max < longest[i]) {
+          max = longest[i];
+        }
+      }
+      return max;
+    }
+};
+```
+
+## Next Permutation 
+
+```cpp
+class Solution {
+ public:
+  void nextPermutation(std::vector<int>& nums) {
+    auto it = std::adjacent_find(nums.rbegin(), nums.rend(), std::greater<int>());
+    // 'it' points to the first one, going backward, that is greater than its next. 
+    if (it == nums.rend()) { // in descending order. Simply reverse.
+      std::reverse(nums.begin(), nums.end());
+    } else {
+      auto other = std::find_if(
+        nums.rbegin(), it + 1,
+        std::bind(std::greater<int>(), std::placeholders::_1, *(it + 1)));
+      std::iter_swap(it + 1, other);
+      std::sort(it.base() - 1, nums.end());
+    }
+  }
+};
+```
+
+## Substring with Concatenation of All Words 
+
+hash-table solution. Slower than the sliding window one.
+
+```cpp
+class Solution {
+public:
+    std::vector<int> findSubstring(const std::string& s,
+                                   const std::vector<std::string>& words) {
+      assert(words.size() > 0);
+      
+      // Build frequency map of 'words'.
+      std::unordered_map<std::string, int> freq;
+      for (const auto& word : words) {
+        ++freq[word];
+      }
+      
+      std::size_t word_len = words.front().length();
+      std::size_t len = words.size() * word_len;
+      
+      std::vector<int> positions;
+      for (std::size_t i = 0; i + len - 1 < s.length(); ++i) {
+        std::string tmp(s, i, len);
+        
+        std::unordered_map<std::string, int> tmp_freq;
+        for (std::size_t k = 0; k < len; k += word_len) {
+          ++tmp_freq[{tmp, k, word_len}];
+        }
+        
+        if (freq == tmp_freq) {
+          positions.emplace_back(i);
+        }
+      }
+      
+      return positions;
+    }
+};
+```
