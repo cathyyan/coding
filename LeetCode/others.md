@@ -1,3 +1,26 @@
+## 263. Ugly Numbers
+```cpp
+class Solution {
+public:
+    long long largestDivisor(long long num) {
+        long long d = sqrt(num);
+        while (d > 1) {
+            if (num % d == 0) break;
+            --d;
+        }
+        return d;
+    }
+    
+    bool isUgly(long long num) {
+        if (!num) return false;
+        long long my_num = abs(num);
+        long long d = largestDivisor(my_num);
+        if (d == 1) return num == 1 || num == 2 || num == 3 || num == 5;
+        return isUgly(d) && isUgly(num / d);
+    }
+};
+```
+
 ## 258. Add Digits
 ```cpp
 class Solution {
