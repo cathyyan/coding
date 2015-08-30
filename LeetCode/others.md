@@ -61,6 +61,49 @@
 ## 191. Number of 1 Bits 
 ## 190. Reverse Bits 
 ## 189. Rotate Array 
+
+1. O(k * n), TLE
+```cpp
+    void rotate(vector<int>& nums, int k) {
+        if (nums.empty()) return;
+        
+        while (k--) {
+            int tmp = nums.back();
+            for (size_t i = 0; i + 1 < nums.size(); ++i) {
+                nums[i + 1] = nums[i];
+            }
+            nums.front() = tmp;
+        }
+    }
+```
+2. O(n) + GCD running time, 48ms
+```cpp
+    int gcd(int a, int b) {
+        return b == 0 ? a : gcd(b, a % b);
+    }
+    
+    void rotate(vector<int>& nums, int k) {
+        int d = gcd(nums.size(), k);
+        int n = nums.size() / d;
+        for (int i = 0; i < d; ++i) {
+            int a = nums[i], index = i;
+            for (int j = 0; j < n; ++j) {
+                index = (index + k) % nums.size();
+                std::swap(a, nums[index]);
+            }
+        }
+    }
+```
+3. O(n), 24ms
+```cpp
+    void rotate(vector<int>& nums, int k) {
+        int count = k % nums.size();
+        std::reverse(nums.begin(), nums.end());
+        std::reverse(nums.begin(), nums.begin() + count);
+        std::reverse(nums.begin() + count, nums.end());
+    }
+```
+
 ## 188. Best Time to Buy and Sell Stock IV 
 ## 187. Repeated DNA Sequences 
 ## 186. Reverse Words in a String II 
