@@ -50,6 +50,21 @@
 ## 208. Implement Trie (Prefix Tree) 
 ## 207. Course Schedule
 ## 206. Reverse Linked List
+```cpp
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        ListNode* new_head = nullptr;
+        while (head) {
+            ListNode* tmp = head->next;
+            head->next = new_head;
+            new_head = head;
+            head = tmp;
+        }
+        return new_head;
+    }
+};
+```
 ## 205. Isomorphic Strings 
 ## 204. Count Primes 
 ## 203. Remove Linked List Elements
