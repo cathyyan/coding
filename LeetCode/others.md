@@ -71,7 +71,7 @@
         }
         return bs.to_ulong();
     }
-    ```
+```
     
 ## 189. Rotate Array 
 
