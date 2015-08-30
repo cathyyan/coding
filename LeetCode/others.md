@@ -54,6 +54,31 @@
 ## 204. Count Primes 
 ## 203. Remove Linked List Elements
 ## 202. Happy Number 
+```cpp
+class Solution {
+public:
+    int toNext(int n) {
+        int sum = 0;
+        while (n) {
+            sum += pow(n % 10, 2);
+            n /= 10;
+        }
+        return sum;
+    }
+    
+    bool isHappy(int n) {
+        unordered_set<int> seen;
+        int next = n;
+        while (true) {
+            if (next == 1) return true;
+            if (seen.count(next)) return false;
+            seen.insert(next);
+            next = toNext(next);
+        }
+        return false;
+    }
+};
+```
 ## 201. Bitwise AND of Numbers Range 
 ## 200. Number of Islands
 ## 199. Binary Tree Right Side View
