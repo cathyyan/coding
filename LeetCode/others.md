@@ -79,7 +79,25 @@ public:
 ## 205. Isomorphic Strings 
 ## 204. Count Primes 
 ## 203. Remove Linked List Elements
-
+```cpp
+class Solution {
+public:
+    ListNode* removeElements(ListNode* head, int val) {
+        ListNode dummy(0);
+        dummy.next = head;
+        for (ListNode* p = &dummy; p;) {
+            if (p->next && p->next->val == val) {
+                ListNode* tmp = p->next;
+                p->next = p->next->next;
+                delete tmp;
+            } else {
+                p = p->next;
+            }
+        }
+        return dummy.next;
+    }
+};
+```
 ## 202. Happy Number 
 ```cpp
 class Solution {
