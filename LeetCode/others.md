@@ -60,6 +60,19 @@
 ## 198. House Robber 
 ## 191. Number of 1 Bits 
 ## 190. Reverse Bits 
+
+```cpp
+    uint32_t reverseBits(uint32_t n) {
+        bitset<32> bs(n);
+        for (int i = 0, j = 31; i < j; ++i, --j) {
+            bool tmp = bs[i];
+            bs[i] = bs[j];
+            bs[j] = tmp;
+        }
+        return bs.to_ulong();
+    }
+    ```
+    
 ## 189. Rotate Array 
 
 1. O(k * n), TLE
