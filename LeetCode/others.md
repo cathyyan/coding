@@ -186,6 +186,28 @@ public:
 ```
 ## 205. Isomorphic Strings 
 ## 204. Count Primes 
+```cpp
+class Solution {
+public:
+    int countPrimes(int n) {
+        if (n <= 2) return 0;
+        vector<bool> is_prime(n, true);
+        is_prime[1] = is_prime[0] = false;
+        int k = 2;
+        while (k < n) {
+            if (is_prime[k]) {
+                for (int x = 2; x * k < n; ++x)
+                    is_prime[x * k] = false;
+            }
+            ++k;
+        }
+        
+        int count = 0;
+        for (auto x : is_prime) { count += x; }
+        return count;
+    }
+};
+```
 ## 203. Remove Linked List Elements
 ```cpp
 class Solution {
