@@ -19,6 +19,17 @@
 ## 239. Sliding Window Maximum 
 ## 238. Product of Array Except Self 
 ## 237. Delete Node in a Linked List 
+```cpp
+class Solution {
+public:
+    void deleteNode(ListNode* node) {
+        // It's not the tail. so...
+        int val = node->next->val;
+        node->next = node->next->next;
+        node->val = val;
+    }
+};
+```
 ## 236. Lowest Common Ancestor of a Binary Tree
 ## 235. Lowest Common Ancestor of a Binary Search Tree 
 ## 234. Palindrome Linked List 
@@ -68,6 +79,7 @@ public:
 ## 205. Isomorphic Strings 
 ## 204. Count Primes 
 ## 203. Remove Linked List Elements
+
 ## 202. Happy Number 
 ```cpp
 class Solution {
