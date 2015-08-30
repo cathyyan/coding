@@ -68,6 +68,25 @@
 ## 174. Dungeon Game 
 ## 173. Binary Search Tree Iterator
 ## 172. Factorial Trailing Zeroes
+
+```cpp
+class Solution {
+public:
+    int trailingZeroes(int n) {
+        return countFives(n);
+    }
+    
+    int countFives(int n) {
+        int count = 0;
+        long long k = 5;  // n = 2147483647
+        while (n >= k) {
+            count += n / k;
+            k *= 5;
+        }
+        return count;
+    }
+};
+```
 ## 171. Excel Sheet Column Number
 
 ```cpp
