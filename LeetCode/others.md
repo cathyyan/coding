@@ -67,6 +67,58 @@
 ## 179. Largest Number 
 ## 174. Dungeon Game 
 ## 173. Binary Search Tree Iterator
+
+```cpp
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class BSTIterator {
+public:
+    BSTIterator(TreeNode *root) : next_(nullptr) {
+        if (root) s_.push(root);
+    }
+
+    /** @return whether we have a next smallest number */
+    bool hasNext() {
+        next_ = nullptr;
+        while (!s_.empty()) {
+            TreeNode* tmp = s_.top();
+            if (tmp->left) {
+                s_.push(tmp->left);
+                tmp->left = nullptr;
+            } else {
+                s_.pop();
+                next_ = tmp;
+                if (tmp->right) s_.push(tmp->right);
+                break;
+            }
+        }
+        return next_ != nullptr;
+    }
+
+    /** @return the next smallest number */
+    int next() {
+        return next_->val;
+    }
+    
+private:
+    stack<TreeNode*> s_;
+    TreeNode* next_;
+};
+
+/**
+ * Your BSTIterator will be called like this:
+ * BSTIterator i = BSTIterator(root);
+ * while (i.hasNext()) cout << i.next();
+ */
+```
+
 ## 172. Factorial Trailing Zeroes
 
 ```cpp
