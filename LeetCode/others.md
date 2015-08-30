@@ -59,6 +59,26 @@
 ## 199. Binary Tree Right Side View
 ## 198. House Robber 
 ## 191. Number of 1 Bits 
+
+```cpp
+class Solution {
+public:
+    int hammingWeight(uint32_t n) {
+        uint32_t a = 0xAAAAAAAA;
+        uint32_t b = 0xCCCCCCCC;
+        uint32_t c = 0xF0F0F0F0;
+        uint32_t d = 0xFF00FF00;
+        uint32_t e = 0xFFFF0000;
+      
+        uint32_t t = ((n & a) >> 1) + (n & ~a);
+        t = ((t & b) >> 2) + (t & ~b);
+        t = ((t & c) >> 4) + (t & ~c);
+        t = ((t & d) >> 8) + (t & ~d);
+        t = ((t & e) >> 16) + (t & ~e);
+        return t;
+    }
+};
+```
 ## 190. Reverse Bits 
 
 ```cpp
