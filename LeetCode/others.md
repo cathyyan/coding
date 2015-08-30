@@ -31,6 +31,20 @@ public:
 ## 244. Shortest Word Distance II  
 ## 243. Shortest Word Distance 
 ## 242. Valid Anagram
+```cpp
+class Solution {
+public:
+    map<char, int> Freq(const string& s) {
+        map<char, int> f;
+        for (auto ch : s) { ++f[ch]; }
+        return f;
+    }
+    
+    bool isAnagram(string s, string t) {
+        return s.length() == t.length() && Freq(s) == Freq(t);
+    }
+};
+```
 ## 241. Different Ways to Add Parentheses
 ## 240. Search a 2D Matrix II
 ## 239. Sliding Window Maximum 
@@ -53,9 +67,35 @@ public:
 ## 233. Number of Digit One
 ## 232. Implement Queue using Stacks 
 ## 231. Power of Two 
+```cpp
+class Solution {
+public:
+    bool isPowerOfTwo(int n) {
+        return n <= 0 ? false : 0 == (n & n - 1);
+    }
+};
+```
 ## 230. Kth Smallest Element in a BST
 ## 229. Majority Element II
 ## 228. Summary Ranges 
+```cpp
+class Solution {
+public:
+    vector<string> summaryRanges(vector<int>& nums) {
+        vector<string> ret;
+        int s = 0;
+        for (size_t i = 1; i <= nums.size(); ++i) {
+            if (i == nums.size() || nums[i] != nums[i - 1] + 1) {
+                ret.emplace_back(
+                    s == i - 1 ? std::to_string(nums[s]) :
+                                 std::to_string(nums[s]) + "->" + std::to_string(nums[i - 1]));
+                s = i;
+            }
+        }
+        return ret;
+    }
+};
+```
 ## 227. Basic Calculator II
 ## 226. Invert Binary Tree 
 ## 225. Implement Stack using Queues 
@@ -65,8 +105,36 @@ public:
 ## 221. Maximal Square 
 ## 220. Contains Duplicate III 
 ## 219. Contains Duplicate II
+```cpp
+class Solution {
+public:
+    bool containsNearbyDuplicate(vector<int>& nums, int k) {
+        unordered_map<int, size_t> m;
+        for (size_t i = 0; i < nums.size(); ++i) {
+            if (m.count(nums[i]) && i - m[nums[i]] <= k) {
+                return true;
+            }
+            m[nums[i]] = i;
+        }
+        return false;
+    }
+};
+```
 ## 218. The Skyline Problem
 ## 217. Contains Duplicate 
+```cpp
+class Solution {
+public:
+    bool containsDuplicate(vector<int>& nums) {
+        unordered_set<int> s;
+        for (const auto num : nums) {
+            if (!s.insert(num).second) return true;
+        }
+        return false;
+    }
+};
+```
+
 ## 216. Combination Sum III
 ## 215. Kth Largest Element in an Array
 ## 214. Shortest Palindrome
