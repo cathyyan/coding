@@ -341,6 +341,28 @@ public:
 ## 187. Repeated DNA Sequences 
 ## 186. Reverse Words in a String II 
 ## 179. Largest Number 
+
+A number `a` has to go before `b` if and only if `string(ab) > string(ba)`.
+
+```cpp
+class Solution {
+public:
+    string largestNumber(vector<int>& nums) {
+        vector<string> ns(nums.size());
+        transform(nums.begin(), nums.end(), ns.begin(), [](int n) {
+            return to_string(n);
+        });
+        sort(ns.begin(), ns.end(), [](const string& a, const string& b) {
+            return a + b > b + a;
+        });
+        return accumulate(ns.begin(), ns.end(), string{},
+            [](const string& a, const string& b) {
+                if (a == "0" && b == "0") return a;
+                return a + b;
+            });
+    }
+};
+```
 ## 174. Dungeon Game 
 ## 173. Binary Search Tree Iterator
 
