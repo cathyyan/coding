@@ -163,6 +163,81 @@ public:
 ## 214. Shortest Palindrome
 ## 213. House Robber II
 ## 212. Word Search II 
+
+Got TLE several times because of the way I recorded visited letter cells: I was
+using a `unordered_set()` of cell coordinates. It got AC after I switched to use
+a space char for letter cells that have been taken.
+
+```cpp
+struct Node {
+  Node() : exist(false) {
+    for (int i = 0; i < 26; ++i) next[i] = nullptr;
+  }
+  
+  bool exist;
+  Node* next[26];
+};
+
+int D[][2] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+
+class Solution {
+public:
+  vector<string> findWords(vector<vector<char>>& board, vector<string>& words) {
+    Node* root = BuildTrie(words);
+    unordered_set<string> found;
+    for (size_t i = 0; i < board.size(); ++i) {
+      for (size_t j = 0; j < board[i].size(); ++j) {
+        find(board, words.size(), found, i, j, "", root);
+      }
+    }
+    // DeleteTrie(root);
+    return vector<string>(found.begin(), found.end());
+  }
+  
+private:
+  void find(vector<vector<char>>& board, int total, unordered_set<string>& found,
+            int x, int y, string cur, Node* cur_position) {
+    if (cur_position->exist) { found.insert(cur); }
+    if (found.size() >= total) return;
+    if (x >= 0 && x < board.size() && y >= 0 && y < board.front().size() &&
+        board[x][y] != ' ' &&
+        cur_position->next[board[x][y] - 'a']) {
+      char tmp = board[x][y];
+      board[x][y] = ' ';
+      for (int d = 0; d < 4; ++d) {
+        find(board, total, found, x + D[d][0], y + D[d][1], cur + tmp, cur_position->next[tmp - 'a']);
+      }
+      board[x][y] = tmp;
+    }
+  }
+  
+  Node* BuildTrie(const vector<string>& words) {
+    Node* root = new Node;
+    for (const string& s : words) {
+      AddToTrie(root, s);
+    }
+    return root;
+  }
+  
+  void DeleteTrie(Node* n) {
+    for (int i = 0; i < 26; ++i) {
+      if (n->next[i]) DeleteTrie(n->next[i]);
+    }
+    delete n;
+  }
+  
+  void AddToTrie(Node* root, const string& s) {
+    Node* n = root;
+    for (char ch : s) {
+      if (n->next[ch - 'a'] == nullptr) {
+        n->next[ch - 'a'] = new Node;
+      }
+      n = n->next[ch - 'a'];
+    }
+    n->exist = true;
+  }
+};
+```
 ## 211. Add and Search Word - Data structure design
 Use Trie.
 
