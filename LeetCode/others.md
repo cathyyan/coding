@@ -339,6 +339,66 @@ public:
 
 ## 188. Best Time to Buy and Sell Stock IV 
 ## 187. Repeated DNA Sequences 
+
+Representing a string as an integer to reduce memory footprint is the key to avoid 'Memory Limit Exceeded' errors.
+
+```cpp
+class Solution {
+public:
+    int ToInt(char ch) {
+        switch (ch) {
+            case 'A': return 1;
+            case 'C': return 2;
+            case 'G': return 3;
+            case 'T': return 4;
+            default: return -1;
+        }
+    }
+    
+    char ToChar(int n) {
+        switch (n) {
+            case 1: return 'A';
+            case 2: return 'C';
+            case 3: return 'G';
+            case 4: return 'T';
+            default: return ' ';
+        }
+    }
+    
+    int ToInt(const string& s) {
+        int ret = 0;
+        for (size_t p = 0; p < s.length(); ++p) {
+            ret = ret * 5 + ToInt(s[p]);
+        }
+        return ret;
+    }
+    
+    string ToStr(int n) {
+        string s;
+        while (n) {
+            s.append(1, ToChar(n % 5));
+            n /= 5;
+        }
+        std::reverse(s.begin(), s.end());
+        return s;
+    }
+    
+    vector<string> findRepeatedDnaSequences(string s) {
+        unordered_map<int, int> freq;
+        for (size_t p = 0; p + 10 <= s.length(); ++p) {
+            string tmp = s.substr(p, 10);
+            ++freq[ToInt(tmp)];
+        }
+        vector<string> results;
+        for (const auto pv : freq) {
+            if (pv.second > 1) {
+                results.emplace_back(ToStr(pv.first));
+            }
+        }
+        return results;
+    }
+};
+```
 ## 186. Reverse Words in a String II 
 ## 179. Largest Number 
 
