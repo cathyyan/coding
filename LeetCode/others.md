@@ -165,6 +165,51 @@ public:
 ## 212. Word Search II 
 ## 211. Add and Search Word - Data structure design
 ## 210. Course Schedule II 
+
+Same as #207.
+
+```cpp
+class Solution {
+public:
+    using Graph = unordered_map<int, unordered_set<int>>;
+
+    pair<Graph, vector<int>> BuildGraph(int numCourses, const vector<pair<int, int>>& prerequisitesconst) {
+        Graph g;
+        vector<int> in_degrees(numCourses, 0);
+        for (int i = 0; i < numCourses; ++i) {
+            g[i] = {};
+        }
+        for (const auto& pv : prerequisitesconst) {
+            if (g[pv.second].insert(pv.first).second) {
+                ++in_degrees[pv.first];
+            }
+        }
+        return {g, in_degrees};
+    }
+
+    int FindFirstWithoutIncomingEdges(const vector<int>& degrees) {
+        for (int i = 0; i < degrees.size(); ++i) {
+            if (degrees[i] == 0) return i;
+        }
+        return -1;
+    }
+
+    vector<int> findOrder(int numCourses, vector<pair<int, int>>& prerequisites) {
+        vector<int> order;
+        
+        auto gv = BuildGraph(numCourses, prerequisites);
+        Graph& g = gv.first;
+        vector<int>& in_degrees = gv.second;
+        int next = -1;
+        while ((next = FindFirstWithoutIncomingEdges(in_degrees)) >= 0) {
+            order.emplace_back(next);
+            for (const auto& tmp : g[next]) { --in_degrees[tmp]; }
+            in_degrees[next] = -1;
+        }
+        return *std::max_element(in_degrees.begin(), in_degrees.end()) < 0 ? order : vector<int>();
+    }
+};
+```
 ## 209. Minimum Size Subarray Sum
 ## 208. Implement Trie (Prefix Tree) 
 ```cpp
