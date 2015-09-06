@@ -164,6 +164,91 @@ public:
 ## 213. House Robber II
 ## 212. Word Search II 
 ## 211. Add and Search Word - Data structure design
+Use Trie.
+
+```cpp
+class TrieNode {
+public:
+    // Initialize your data structure here.
+    TrieNode() : exists_(false) {
+        for(int i = 0; i < 26; ++i) next_[i] = nullptr;
+    }
+
+    bool exists_;
+    TrieNode* next_[26];
+};
+
+class Trie {
+public:
+    Trie() {
+        root = new TrieNode();
+    }
+
+    // Inserts a word into the trie.
+    void insert(string word) {
+        TrieNode* n = root;
+        for (char ch : word) {
+            if (n->next_[ch - 'a'] == nullptr) {
+                n->next_[ch - 'a'] = new TrieNode();
+            }
+            n = n->next_[ch - 'a'];
+        }
+        n->exists_ = true;
+    }
+
+    // Returns if the word is in the data structure. A word could
+    // contain the dot character '.' to represent any one letter.
+    bool search(TrieNode* n, const string& word, int pos) {
+        if (pos >= word.length()) {
+            return n->exists_;
+        }
+        if (word[pos] == '.') {
+            for (int i = 0; i < 26; ++i) {
+                if (n->next_[i] && search(n->next_[i], word, pos + 1)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        return n->next_[word[pos] - 'a'] && search(n->next_[word[pos] - 'a'], word, pos + 1);
+    }
+    
+    bool search(string word) {
+        return search(root, word, 0);
+    }
+    
+private:
+    TrieNode* root;
+};
+
+// Your Trie object will be instantiated and called as such:
+// Trie trie;
+// trie.insert("somestring");
+// trie.search("key");
+
+class WordDictionary {
+public:
+
+    // Adds a word into the data structure.
+    void addWord(string word) {
+        t_.insert(word);
+    }
+
+    // Returns if the word is in the data structure. A word could
+    // contain the dot character '.' to represent any one letter.
+    bool search(string word) {
+        return t_.search(word);
+    }
+    
+private:
+    Trie t_;
+};
+
+// Your WordDictionary object will be instantiated and called as such:
+// WordDictionary wordDictionary;
+// wordDictionary.addWord("word");
+// wordDictionary.search("pattern");
+```
 ## 210. Course Schedule II 
 
 Same as #207.
