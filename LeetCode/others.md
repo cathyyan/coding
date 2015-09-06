@@ -167,6 +167,70 @@ public:
 ## 210. Course Schedule II 
 ## 209. Minimum Size Subarray Sum
 ## 208. Implement Trie (Prefix Tree) 
+```cpp
+class TrieNode {
+public:
+    // Initialize your data structure here.
+    TrieNode() : exists_(false) {
+        for(int i = 0; i < 26; ++i) next_[i] = nullptr;
+    }
+
+    bool exists_;
+    TrieNode* next_[26];
+};
+
+class Trie {
+public:
+    Trie() {
+        root = new TrieNode();
+    }
+
+    // Inserts a word into the trie.
+    void insert(string word) {
+        TrieNode* n = root;
+        for (char ch : word) {
+            if (n->next_[ch - 'a'] == nullptr) {
+                n->next_[ch - 'a'] = new TrieNode();
+            }
+            n = n->next_[ch - 'a'];
+        }
+        n->exists_ = true;
+    }
+
+    // Returns if the word is in the trie.
+    bool search(string word) {
+        TrieNode* n = root;
+        for (char ch : word) {
+            if (n->next_[ch - 'a'] == nullptr) {
+                return false;
+            }
+            n = n->next_[ch - 'a'];
+        }
+        return n->exists_;
+    }
+
+    // Returns if there is any word in the trie
+    // that starts with the given prefix.
+    bool startsWith(string prefix) {
+        TrieNode* n = root;
+        for (char ch : prefix) {
+            if (n->next_[ch - 'a'] == nullptr) {
+                return false;
+            }
+            n = n->next_[ch - 'a'];
+        }
+        return true;
+    }
+
+private:
+    TrieNode* root;
+};
+
+// Your Trie object will be instantiated and called as such:
+// Trie trie;
+// trie.insert("somestring");
+// trie.search("key");
+```
 ## 207. Course Schedule
 
 Check whether a graph is a DAG ([Wikipedia](https://en.wikipedia.org/wiki/Topological_sorting)).
