@@ -256,6 +256,53 @@ public:
 ```
 ## 201. Bitwise AND of Numbers Range 
 ## 200. Number of Islands
+
+BFS/DFS.
+
+```cpp
+class Solution {
+public:
+  using Grid = vector<vector<char>>;
+  
+  int numIslands(Grid& grid) {
+    if (grid.empty()) return 0;
+    const int R = grid.size(), C = grid.front().size();
+    int ret = 0;
+    for (int i = 0; i < R; ++i) {
+      for (int j = 0; j < C; ++j) {
+        ret += Label(grid, i, j);
+      }
+    }
+    return ret;
+  }
+  
+private:
+  // Lable the island containing (x, y).
+  int Label(Grid& grid, int x, int y) {
+    if (grid[x][y] == '0') return 0;
+    
+    const int R = grid.size(), C = grid.front().size();
+    const int DIRECTIONS[][2] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+    
+    // Run BFS starting from (x, y)
+    queue<pair<int, int>> q;
+    q.push({x, y});
+    grid[x][y] = '0';
+    while (!q.empty()) {
+      pair<int, int> tmp = q.front(); q.pop();
+      for (int d = 0; d < 4; ++d) {
+        int xx = tmp.first + DIRECTIONS[d][0], yy = tmp.second + DIRECTIONS[d][1];
+        if (xx >= 0 && xx < R && yy >= 0 && yy < C && grid[xx][yy] == '1') {
+          grid[xx][yy] = '0';
+          q.push({xx, yy});
+        }
+      }
+    }
+    
+    return 1;
+  }
+};
+```
 ## 199. Binary Tree Right Side View
 ```cpp
 /**
