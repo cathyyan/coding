@@ -363,7 +363,29 @@ public:
     }
 };
 ```
-## 174. Dungeon Game 
+## 174. Dungeon Game
+
+When sometimes you cannot go forward, think about going backward.
+
+```cpp
+class Solution {
+public:
+    int calculateMinimumHP(vector<vector<int>>& dungeon) {
+        const int R = dungeon.size(), C = dungeon.front().size();
+        // Minimum health needed before entering (i,j).
+        vector<vector<int>> mh(R + 1, vector<int>(C + 1, numeric_limits<int>::max()));
+        mh[R][C - 1] = mh[R - 1][C] = 1;
+        for (int i = R - 1; i >= 0; --i) {
+          for (int j = C - 1; j >= 0; --j) {
+            int tmp = std::min(mh[i + 1][j], mh[i][j + 1]);
+            mh[i][j] = std::max(tmp - dungeon[i][j], 1);
+          }
+        }
+        return mh[0][0];
+    }
+};
+```
+
 ## 173. Binary Search Tree Iterator
 
 ```cpp
