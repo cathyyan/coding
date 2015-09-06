@@ -211,6 +211,29 @@ public:
 };
 ```
 ## 209. Minimum Size Subarray Sum
+```cpp
+class Solution {
+public:
+    int minSubArrayLen(int s, vector<int>& nums) {
+        if (nums.empty()) return 0;
+        int left = 0, right = 0, sum = nums.front(), ans = 0;
+        while (right < nums.size()) {
+            if (sum >= s) {
+                if (!ans || ans > right - left + 1) {
+                    ans = right - left + 1;
+                }
+                sum -= nums[left];
+                ++left;
+            } else {
+                ++right;
+                sum += nums[right];
+            }
+        }
+        return ans;
+    }
+};
+```
+
 ## 208. Implement Trie (Prefix Tree) 
 ```cpp
 class TrieNode {
