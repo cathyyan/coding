@@ -168,6 +168,48 @@ public:
 ## 209. Minimum Size Subarray Sum
 ## 208. Implement Trie (Prefix Tree) 
 ## 207. Course Schedule
+
+Check whether a graph is a DAG ([Wikipedia](https://en.wikipedia.org/wiki/Topological_sorting)).
+
+```cpp
+class Solution {
+public:
+    using Graph = unordered_map<int, unordered_set<int>>;
+    
+    pair<Graph, vector<int>> BuildGraph(int numCourses, const vector<pair<int, int>>& prerequisitesconst) {
+        Graph g;
+        vector<int> in_degrees(numCourses, 0);
+        for (int i = 0; i < numCourses; ++i) {
+            g[i] = {};
+        }
+        for (const auto& pv : prerequisitesconst) {
+            if (g[pv.first].insert(pv.second).second) {
+                ++in_degrees[pv.second];
+            }
+        }
+        return {g, in_degrees};
+    }
+    
+    int FindFirstWithoutIncomingEdges(const vector<int>& degrees) {
+        for (int i = 0; i < degrees.size(); ++i) {
+            if (degrees[i] == 0) return i;
+        }
+        return -1;
+    }
+    
+    bool canFinish(int numCourses, vector<pair<int, int>>& prerequisites) {
+        auto gv = BuildGraph(numCourses, prerequisites);
+        Graph& g = gv.first;
+        vector<int>& in_degrees = gv.second;
+        int next = -1;
+        while ((next = FindFirstWithoutIncomingEdges(in_degrees)) >= 0) {
+            for (const auto& tmp : g[next]) { --in_degrees[tmp]; }
+            in_degrees[next] = -1;
+        }
+        return *std::max_element(in_degrees.begin(), in_degrees.end()) < 0;
+    }
+};
+```
 ## 206. Reverse Linked List
 ```cpp
 class Solution {
