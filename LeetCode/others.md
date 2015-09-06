@@ -338,6 +338,55 @@ public:
 ```
 
 ## 188. Best Time to Buy and Sell Stock IV 
+
+At first I used the dictionary approach to implement the DP. However I got
+TLE. Guessing it was due to too much time spent on converting integers to
+strings to compose hash keys.
+
+```cpp
+class Solution {
+public:
+  int maxProfit(int k, vector<int>& prices) {
+    return 2 * k >= prices.size() ? MP(prices) : MP(k, prices);
+  }
+  
+private:
+  // Version 1: if we have sufficient budget for transactions, we
+  // can transact as many as we want.
+  int MP(const vector<int>& prices) {
+    int ret = 0;
+    for (size_t p = 1; p < prices.size(); ++p) {
+      if (prices[p] > prices[p - 1]) {
+        ret += prices[p] - prices[p - 1];
+      }
+    }
+    return ret;
+  }
+  
+  // Version 1: we have limited budget.
+  int MP(int k, const vector<int> prices) {
+    vector<vector<vector<int>>> profit(
+      prices.size() + 1,
+      vector<vector<int>>(2, vector<int>(k + 1, numeric_limits<int>::min())));
+    
+    for (int i = 0; i <= k; ++i) { profit[0][0][i] = 0; }
+    for (int d = 1; d < prices.size() + 1; ++d) {
+      for (int i = 0; i <= k; ++i) {
+        profit[d][0][i] = std::max(profit[d - 1][0][i],
+                                   profit[d - 1][1][i] + prices[d - 1]);
+      }
+      for (int i = 0; i <= k; ++i) {
+        profit[d][1][i] = std::max(
+          profit[d - 1][1][i],
+          i > 0 ? profit[d - 1][0][i - 1] - prices[d - 1] : numeric_limits<int>::min());
+      }
+    }
+    
+    return profit[prices.size()][0][k];
+  }
+};
+```
+
 ## 187. Repeated DNA Sequences 
 
 Representing a string as an integer to reduce memory footprint is the key to avoid 'Memory Limit Exceeded' errors.
