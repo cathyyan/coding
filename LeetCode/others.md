@@ -258,6 +258,24 @@ public:
 ## 200. Number of Islands
 ## 199. Binary Tree Right Side View
 ## 198. House Robber 
+DP.
+```cpp
+class Solution {
+public:
+    int rob(vector<int>& nums) {
+        if (nums.empty()) return 0;
+        
+        vector<vector<int>> profit(2, vector<int>(nums.size(), 0));
+        profit[0][0] = 0;
+        profit[1][0] = nums[0];
+        for (size_t p = 1; p < nums.size(); ++p) {
+            profit[0][p] = std::max(profit[0][p - 1], profit[1][p - 1]);
+            profit[1][p] = profit[0][p - 1] + nums[p];
+        }
+        return std::max(profit[0].back(), profit[1].back());
+    }
+};
+```
 ## 191. Number of 1 Bits 
 
 ```cpp
