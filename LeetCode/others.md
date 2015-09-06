@@ -257,6 +257,35 @@ public:
 ## 201. Bitwise AND of Numbers Range 
 ## 200. Number of Islands
 ## 199. Binary Tree Right Side View
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> rightSideView(TreeNode* root) {
+        vector<int> result;
+        if (!root) return result;
+        vector<TreeNode*> cur_level = {root};
+        while (!cur_level.empty()) {
+            result.emplace_back(cur_level.back()->val);
+            vector<TreeNode*> next_level;
+            for (TreeNode* n : cur_level) {
+                if (n->left) next_level.emplace_back(n->left);
+                if (n->right) next_level.emplace_back(n->right);
+            }
+            cur_level = next_level;
+        }
+        return result;
+    }
+};
+```
 ## 198. House Robber 
 DP.
 ```cpp
