@@ -255,6 +255,36 @@ public:
 };
 ```
 ## 201. Bitwise AND of Numbers Range 
+
+Calculate whether each bit should be set. See inline comments.
+
+```cpp
+class Solution {
+public:
+    int rangeBitwiseAnd(int m, int n) {
+        unsigned ret = 0;
+        for (unsigned k = 0; k <= 31; ++k) {
+            unsigned two_k = 1 << k;
+            // Check whether bit #k should be set.
+            // It should be set if and only if [m, n] falls entirely into
+            // [p * 2 ^ k, (p + 1) * 2 ^ k) for some positive odd p.
+            bool to_set = false;
+            for (unsigned p = m / two_k; ; ++p) {
+                unsigned lower = p * two_k, upper = (p + 1) * two_k;
+                if (lower > n) break;
+                if (m < upper && n >= upper) break;
+                if (lower <= m && upper > n && p % 2) {
+                    to_set = true;
+                    break;
+                }
+            }
+            if (to_set) { ret = ret | two_k; }
+        }
+        return static_cast<int>(ret);
+    }
+};
+```
+
 ## 200. Number of Islands
 
 BFS/DFS.
