@@ -162,6 +162,31 @@ public:
 ## 215. Kth Largest Element in an Array
 ## 214. Shortest Palindrome
 ## 213. House Robber II
+
+DP
+```cpp
+class Solution {
+public:
+    int rob(vector<int>& nums) {
+        if (nums.empty()) return 0;
+        if (nums.size() == 1) return nums[0];
+        
+        int profit[2][2] = {{0, nums[1]}, {nums[0], 0}};
+        for (size_t i = 2; i < nums.size(); ++i) {
+            int new_profit[2][2] = {
+                {std::max(profit[0][0], profit[0][1]), profit[0][0] + nums[i]},
+                {std::max(profit[1][0], profit[1][1]), profit[1][0] + nums[i]}
+            };
+            for (int x = 0; x < 2; ++x) {
+                for (int y = 0; y < 2; ++y) {
+                    profit[x][y] = new_profit[x][y];
+                }
+            }
+        }
+        return std::max({profit[0][0], profit[0][1], profit[1][0]});
+    }
+};
+```
 ## 212. Word Search II 
 
 Got TLE several times because of the way I recorded visited letter cells: I was
