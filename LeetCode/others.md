@@ -188,6 +188,37 @@ public:
 ```
 
 ## 216. Combination Sum III
+
+```cpp
+class Solution {
+public:
+    void Find(int k, int n,
+              vector<vector<int>>& results,
+              vector<int>& cur, int sum, int next) {
+      if (cur.size() == k && sum == n) {
+        results.emplace_back(cur);
+        return;
+      }
+      
+      if (cur.size() >= k) return;
+      
+      // not there yet. Choose one.
+      for (int ele = next; ele <= 9 && sum + ele <= n; ++ele) {
+        cur.emplace_back(ele);
+        Find(k, n, results, cur, sum + ele, ele + 1);
+        cur.pop_back();
+      }
+    }
+    
+    vector<vector<int>> combinationSum3(int k, int n) {
+      vector<vector<int>> results;
+      vector<int> cur;
+      Find(k, n, results, cur, 0, 1);
+      return results;
+    }
+};
+```
+
 ## 215. Kth Largest Element in an Array
 ```cpp
 class Solution {
