@@ -189,6 +189,39 @@ public:
 ## 216. Combination Sum III
 ## 215. Kth Largest Element in an Array
 ## 214. Shortest Palindrome
+KMP's failure function is used to find the longest prefix.
+
+```cpp
+class Solution {
+private:
+    // Build KMP failure function for the given string.
+    vector<int> BuildFailureFunction(const string& str) {
+      vector<int> f(str.length() + 1, 0);
+      for (size_t p = 2; p <= str.length(); ++p) {
+        // Calculate f[p]
+        size_t j = f[p - 1];
+        while (true) {
+          if (str[p - 1] == str[j]) {
+            f[p] = j + 1;
+            break;
+          }
+          if (j == 0) break;
+          j = f[j];
+        }
+      }
+      return f;
+    }
+
+public:
+    string shortestPalindrome(string s) {
+      string rs(s);
+      std::reverse(rs.begin(), rs.end());
+      vector<int> f = BuildFailureFunction(s + "#" + rs);
+      cout << f.back() << endl;
+      return rs.substr(0, rs.length() - f.back()) + s;
+    }
+};
+```
 ## 213. House Robber II
 
 DP
