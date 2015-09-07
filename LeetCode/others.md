@@ -173,6 +173,7 @@ public:
 ```
 ## 218. The Skyline Problem
 ## 217. Contains Duplicate 
+
 ```cpp
 class Solution {
 public:
@@ -188,6 +189,42 @@ public:
 
 ## 216. Combination Sum III
 ## 215. Kth Largest Element in an Array
+```cpp
+class Solution {
+public:
+    int findKthLargest(vector<int>& nums, int k) {
+        int s = 0, e = static_cast<int>(nums.size()) - 1;
+        while (true) {
+            int pivot = partition(nums, s, e);
+            if (s + k - 1 == pivot) { return nums[pivot]; }
+            if (s + k - 1 < pivot) {
+                e = pivot - 1;
+            } else {
+                k -= pivot - s + 1;
+                s = pivot + 1;
+            }
+        }
+        return -1;  // Should not come here.
+    }
+    
+private:
+    // Partition the given array and return position of the pivot.
+    int partition(vector<int>& nums, int s, int e) {
+        int i = s, j = s, pivot = nums[s];
+        while (j <= e) {
+            if (nums[j] > pivot) {
+                nums[i++] = nums[j];
+                nums[j++] = nums[i];
+            } else {
+                ++j;
+            }
+        }
+        nums[i] = pivot;
+        return i;
+    }
+};
+```
+
 ## 214. Shortest Palindrome
 KMP's failure function is used to find the longest prefix.
 
