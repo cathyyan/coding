@@ -172,6 +172,53 @@ public:
 };
 ```
 ## 218. The Skyline Problem
+
+```cpp
+class Solution {
+public:
+  enum class EventType { IN, OUT };
+  
+  class Event {
+  public:
+    Event(int x, int y, EventType t) : x(x), y(y), type(t) {}
+    int x;
+    int y;
+    EventType type;
+  };
+  
+  vector<pair<int, int>> getSkyline(vector<vector<int>>& buildings) {
+    vector<Event> events;
+    for (const auto& b : buildings) {
+      events.emplace_back(b[0], b[2], EventType::IN);
+      events.emplace_back(b[1], b[2], EventType::OUT);
+    }
+    std::sort(events.begin(), events.end(), [](const Event& e1, const Event& e2) {
+      return e1.x < e2.x;
+    });
+    
+    vector<pair<int, int>> results;
+    multiset<int, std::greater<int>> heights;
+    int cur_height = 0;
+    for (size_t i = 0; i < events.size(); ++i) {
+      const auto& e = events[i];
+      if (e.type == EventType::IN) {
+        heights.insert(e.y);
+      } else if (e.type == EventType::OUT) {
+        heights.erase(heights.find(e.y));
+      }
+      if (i + 1 == events.size() || e.x != events[i + 1].x) {
+        int new_height = heights.empty() ? 0 : *heights.begin();
+        if (new_height != cur_height) {
+          results.emplace_back(e.x, new_height);
+          cur_height = new_height;
+        }
+      }
+    }
+    
+    return results;
+  }
+};
+```
 ## 217. Contains Duplicate 
 
 ```cpp
