@@ -1,3 +1,4 @@
+
 ## 263. Ugly Numbers
 ```cpp
 class Solution {
@@ -39,6 +40,33 @@ public:
 };
 ```
 ## 257. Binary Tree Paths
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<string> binaryTreePaths(TreeNode* root) {
+        if (!root) return {};
+        
+        vector<string> paths;
+        for (const auto& path : binaryTreePaths(root->left))
+            paths.emplace_back(path);
+        for (const auto& path : binaryTreePaths(root->right))
+            paths.emplace_back(path);
+            
+        for (auto& path : paths) path.insert(0, to_string(root->val) + "->");
+        if (paths.empty()) paths.emplace_back(to_string(root->val));
+        return paths;
+    }
+};
+```
 ## 256. Paint House  
 ## 255. Verify Preorder Sequence in Binary Search Tree 
 ## 254. Factor Combinations  
