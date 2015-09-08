@@ -142,7 +142,43 @@ public:
 ## 235. Lowest Common Ancestor of a Binary Search Tree 
 ## 234. Palindrome Linked List 
 ## 233. Number of Digit One
-## 232. Implement Queue using Stacks 
+## 232. Implement Queue using Stacks
+```cpp
+class Queue {
+public:
+    // Push element x to the back of queue.
+    void push(int x) {
+        stack<int> tmp;
+        while (!s_.empty()) {
+            tmp.push(s_.top());
+            s_.pop();
+        }
+        s_.push(x);
+        while (!tmp.empty()) {
+            s_.push(tmp.top());
+            tmp.pop();
+        }
+    }
+
+    // Removes the element from in front of queue.
+    void pop(void) {
+        s_.pop();
+    }
+
+    // Get the front element.
+    int peek(void) {
+        return s_.top();
+    }
+
+    // Return whether the queue is empty.
+    bool empty(void) {
+        return s_.empty();
+    }
+    
+private:
+    stack<int> s_;  // Storing elements in FILO order.
+};
+```
 ## 231. Power of Two 
 ```cpp
 class Solution {
