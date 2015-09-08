@@ -176,6 +176,39 @@ public:
 ## 227. Basic Calculator II
 ## 226. Invert Binary Tree 
 ## 225. Implement Stack using Queues 
+```cpp
+class Stack {
+public:
+    // Push element x onto stack.
+    void push(int x) {
+        q2_.push(x);
+        while (!q1_.empty()) {
+            q2_.push(q1_.front());
+            q1_.pop();
+        }
+        q1_.swap(q2_);
+    }
+
+    // Removes the element on top of the stack.
+    void pop() {
+        q1_.pop();
+    }
+
+    // Get the top element.
+    int top() {
+        return q1_.front();
+    }
+
+    // Return whether the stack is empty.
+    bool empty() {
+        return q1_.empty();
+    }
+    
+private:
+    // q1 stores all existing elements in LIFO order.
+    queue<int> q1_, q2_;
+};
+```
 ## 224. Basic Calculator 
 ## 223. Rectangle Area 
 ## 222. Count Complete Tree Nodes
